@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}` // <-- API Key artık dışarıda
+        "Authorization": `Bearer ${process.env.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}` // <-- API Key artık dışarıda
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorDetails = await response.text();
       console.error("OpenAI API response error:", errorDetails);
-      return res.status(500).json({ error: "OpenAI API error", details: errorDetails });
+      return res.status(500).json({ error: "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", details: errorDetails });
     }
 
     const data = await response.json();
