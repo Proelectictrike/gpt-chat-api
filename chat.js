@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
-  // ✅ CORS Headers
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.proelectrictrike.com'); // Allow your Shopify site
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.proelectrictrike.com');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}` // <-- API Key artık dışarıda
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
@@ -31,12 +30,13 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
-
-    if (!data.choices || !Array.isArray(data.choices)) {
-      console.error("OpenAI returned unexpected response:", data);
-      return res.status(500).json({ error: "Invalid response from OpenAI" });
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      console.error("OpenAI API response error:", errorDetails);
+      return res.status(500).json({ error: "OpenAI API error", details: errorDetails });
     }
+
+    const data = await response.json();
 
     return res.status(200).json(data);
 
