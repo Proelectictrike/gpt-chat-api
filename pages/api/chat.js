@@ -13,17 +13,20 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Get the message from the request body
     const { message } = req.body;
 
+    // Validate message format
     if (!message || typeof message !== "string") {
       return res.status(400).json({ error: "Invalid message format" });
     }
 
+    // Send request to OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer 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"
+        "Authorization": `Bearer ${process.env.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}`  // Use environment variable for API key
       },
       body: JSON.stringify({
         model: "gpt-4",
@@ -37,17 +40,24 @@ export default async function handler(req, res) {
       })
     });
 
+    // Check for a successful response from OpenAI
     const data = await response.json();
 
+    // If OpenAI response is unexpected
     if (!data.choices || !Array.isArray(data.choices)) {
       console.error("Unexpected GPT response:", data);
       return res.status(500).json({ error: "Invalid response from OpenAI" });
     }
 
+    // Return the AI response
     return res.status(200).json(data);
 
   } catch (error) {
+    // Log any error that occurs and send a detailed error response
     console.error("OpenAI error:", error);
-    return res.status(500).json({ error: "Something went wrong", detail: error.message });
+    return res.status(500).json({
+      error: "Something went wrong",
+      detail: error.message
+    });
   }
 }
