@@ -1,0 +1,14 @@
+{
+  "name": "perraro-gpt-api",
+  "version": "1.0.0",
+  "description": "Perraro GPT backend API for Shopify chat widget",
+  "main": "api/chat.js",
+  "scripts": {
+    "start": "node api/chat.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "type": "module",
+  "license": "MIT"
+}
