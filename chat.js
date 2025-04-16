@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://www.proelectrictrike.com');
+  res.setHeader('Access-Control-Allow-Origin', 'https://www.proelectrictrike.com'); // your site
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -13,12 +13,15 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer YOUR_API_KEY"  // Replace with your real key
+        "Authorization": "Bearer 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"
       },
       body: JSON.stringify({
-        model: "gpt-4", // or "gpt-3.5-turbo"
+        model: "gpt-4",
         messages: [
-          { role: "system", content: "You are a helpful support assistant for Perraro Electric Bikes. Answer questions clearly, provide warranty help, and give product advice." },
+          {
+            role: "system",
+            content: "You are a friendly and professional AI assistant named Perraro Support AI. You help customers with their electric trike orders, warranties, and common questions. Be helpful, brief, and supportive."
+          },
           { role: "user", content: message }
         ]
       })
@@ -26,7 +29,6 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     return res.status(200).json(data);
-
   } catch (error) {
     console.error("OpenAI error:", error);
     return res.status(500).json({ error: 'Something went wrong' });
